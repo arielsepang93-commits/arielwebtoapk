@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+
 cd apk-builder
 
 echo "App: $APP_NAME | URL: $APP_URL | Pkg: $PKG"
