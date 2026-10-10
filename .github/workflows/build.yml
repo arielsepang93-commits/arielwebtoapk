@@ -3,22 +3,11 @@ name: Build APK
 on:
   workflow_dispatch:
     inputs:
-      app_name:
-        required: true
-        type: string
-      app_url:
-        required: true
-        type: string
-      package_name:
-        required: true
-        type: string
-      permissions:
-        required: true
-        type: string
-      icon_base64:
-        required: false
-        type: string
-        default: ''
+      app_name: { required: true }
+      app_url: { required: true }
+      package_name: { required: true }
+      permissions: { required: true }
+      icon_base64: { required: false, default: '' }
 
 jobs:
   build:
@@ -37,6 +26,9 @@ jobs:
         uses: android-actions/setup-android@v3
         with:
           packages: 'platforms;android-34 build-tools;34.0.0'
+
+      - name: Install Pillow
+        run: pip install Pillow
 
       - name: Inject Config
         env:

@@ -47,7 +47,14 @@ XML
 sed -i "s|applicationId \".*\"|applicationId \"$PKG\"|" app/build.gradle
 
 if [ -n "$ICON" ]; then
-  echo "$ICON" | base64 -d > /tmp/icon.png
+  echo "$ICON" | base64 -d > /tmp/icon.jpg
+  # Convert JPEG ke PNG pakai python (lebih portable drpd imagemagick)
+  python3 - <<PY
+from PIL import Image
+img = Image.open('/tmp/icon.jpg').convert('RGBA')
+img = img.resize((192, 192), Image.LANCZOS)
+img.save('/tmp/icon.png', 'PNG', optimize=True)
+PY
   for d in mipmap-hdpi mipmap-mdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi; do
     mkdir -p "app/src/main/res/$d"
     cp /tmp/icon.png "app/src/main/res/$d/ic_launcher.png"
